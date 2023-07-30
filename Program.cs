@@ -2,33 +2,54 @@
 
 
 using tabuleiro;
-using Xadrez_Console;
 using xadrez;
-try { 
-PartidaXadrez partida = new PartidaXadrez();
+using Xadrez_Console;
+
+
+try
+{
+    PartidaXadrez partida = new PartidaXadrez();
 
     while (!partida.Terminada)
     {
-        Console.Clear();
-        Tela.ImprimirTela(partida.Tab);
-        
-        Console.WriteLine();
-        Console.Write("Origem: ");
-        Posicao origem = Tela.LerPosicaoXadrez().ToPosicao();
+        try
+        {
+            Console.Clear();
+            Tela.ImprimirTela(partida.Tab);
+            Console.WriteLine();
+            Console.WriteLine("Turno: " + partida.Turno);
+            Console.WriteLine("Jogado atual: " + partida.JogadorAtual);
+            Console.WriteLine();
 
-        bool[,] posicoesPossiveis = partida.Tab.Pecas(origem).MovimentosPossiveis();
+            Console.Write("Origem: ");
+            Posicao origem = Tela.LerPosicaoXadrez().ToPosicao();
+            partida.ValidaPosicaoOrigem(origem);
 
-        Console.Clear();
-        Tela.ImprimirTela(partida.Tab, posicoesPossiveis);
+            bool[,] posicoesPossiveis = partida.Tab.Pecas(origem).MovimentosPossiveis();
+
+            Console.Clear();
+            Tela.ImprimirTela(partida.Tab, posicoesPossiveis);
 
 
-        
-        Console.Write("Destino: ");
-        Posicao destino = Tela.LerPosicaoXadrez().ToPosicao();
+            Console.WriteLine();
+            Console.Write("Destino: ");
+            Posicao destino = Tela.LerPosicaoXadrez().ToPosicao();
+            partida.ValidarPosicaoDestino(origem, destino);
 
-        partida.ExecutaMovimento(origem, destino);
+            partida.RealizaJogada(origem, destino);
+
+        }
+        catch (TabuleiroException e)
+        {
+            Console.WriteLine(e.Message);
+            Console.Write("Pressione [ENTER] para repetir a jogada");
+            Console.ReadLine();
+        }
     }
-} catch (Exception e) {
+}
+catch (TabuleiroException e)
+{
     Console.WriteLine(e.Message);
+
 }
 Console.WriteLine("Fim do programa!");
