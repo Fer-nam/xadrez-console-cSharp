@@ -13,9 +13,17 @@ PartidaXadrez partida = new PartidaXadrez();
         Tela.ImprimirTela(partida.Tab);
         
         Console.WriteLine();
-        Console.WriteLine("Origem: ");
+        Console.Write("Origem: ");
         Posicao origem = Tela.LerPosicaoXadrez().ToPosicao();
-        Console.WriteLine("Destino: ");
+
+        bool[,] posicoesPossiveis = partida.Tab.Pecas(origem).MovimentosPossiveis();
+
+        Console.Clear();
+        Tela.ImprimirTela(partida.Tab, posicoesPossiveis);
+
+
+        
+        Console.Write("Destino: ");
         Posicao destino = Tela.LerPosicaoXadrez().ToPosicao();
 
         partida.ExecutaMovimento(origem, destino);
